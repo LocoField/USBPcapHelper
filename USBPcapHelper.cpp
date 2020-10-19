@@ -48,7 +48,7 @@ bool USBPcapHelper::findDevice(USHORT idVendor, USHORT idProduct)
 	device.idVendor = idVendor;
 	device.idProduct = idProduct;
 
-	auto findHotas4Device = [](HANDLE hub, ULONG port, USHORT deviceAddress, PUSB_DEVICE_DESCRIPTOR desc, void *ctx)
+	auto findConnectedDevice = [](HANDLE hub, ULONG port, USHORT deviceAddress, PUSB_DEVICE_DESCRIPTOR desc, void *ctx)
 	{
 		auto device = reinterpret_cast<FindDeviceContext*>(ctx);
 		if (device == nullptr) return;
@@ -63,7 +63,7 @@ bool USBPcapHelper::findDevice(USHORT idVendor, USHORT idProduct)
 	int i = 0;
 	while (usbpcapFilters[i] != NULL)
 	{
-		enumerate_all_connected_devices(usbpcapFilters[i]->device, findHotas4Device, &device);
+		enumerate_all_connected_devices(usbpcapFilters[i]->device, findConnectedDevice, &device);
 
 		if (device.indexFound > 0)
 		{
